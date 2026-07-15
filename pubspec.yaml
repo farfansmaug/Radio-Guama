@@ -1,0 +1,65 @@
+name: radio_guama
+description: Radio Guamá official mobile application.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+
+  # Navigation
+  go_router: ^13.1.0
+
+  # UI & Design
+  google_fonts: ^6.1.0
+  cached_network_image: ^3.3.1
+  shimmer: ^3.0.0
+  intl: ^0.19.0
+  html: ^0.15.4 # For rendering WordPress content
+
+  # Networking & Parsing
+  dio: ^5.4.0
+  http: ^1.2.0
+  xml: ^6.5.0 # For RSS parsing
+  webfeed: ^0.7.0 # Alternative/supplement for RSS
+
+  # Audio
+  just_audio: ^0.9.36
+  audio_service: ^0.18.12
+  audio_session: ^0.1.18
+
+  # Local Storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.2
+  shared_preferences: ^2.2.2
+
+  # Background Tasks
+  workmanager: ^0.5.2
+
+  # Utils
+  connectivity_plus: ^5.0.2
+  url_launcher: ^6.2.4
+  permission_handler: ^11.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  build_runner: ^2.4.8
+  riverpod_generator: ^2.3.9
+  hive_generator: ^2.0.1
+  json_serializable: ^6.7.1
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
