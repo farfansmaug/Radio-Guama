@@ -1,6 +1,6 @@
 import 'package:xml/xml.dart';
 import 'dart:convert';
-import '../constants/env.dart';
+import '../../core/constants/env.dart';
 import '../models/episode.dart';
 import '../../core/network/http_client.dart';
 
@@ -113,8 +113,7 @@ class IvooxRemoteDataSource {
         final content = item.findElements('content').firstOrNull?.text;
         if (content != null) {
           // Try to extract audio URL from content
-          final audioMatch = RegExp(r'src=["\'](.*?)["\']')
-              .firstMatch(content);
+          final audioMatch = RegExp(r'src=["\'](.*?)["\']').firstMatch(content);
           if (audioMatch != null) {
             audioUrl = audioMatch.group(1) ?? '';
           }

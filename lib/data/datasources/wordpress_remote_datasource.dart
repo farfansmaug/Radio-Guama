@@ -1,5 +1,5 @@
 import 'dart:convert';
-import '../constants/env.dart';
+import '../../core/constants/env.dart';
 import '../models/post.dart';
 import '../models/category.dart';
 import '../models/comment.dart';

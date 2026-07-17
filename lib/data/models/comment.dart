@@ -1,7 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 /// Comment model for WordPress comments
-part 'comment.g.dart';
 
 @HiveType(typeId: 3)
 class Comment {

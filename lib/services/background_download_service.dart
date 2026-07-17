@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:workmanager/workmanager.dart';
-import '../constants/env.dart';
+import '../core/constants/env.dart';
 import '../../data/repositories/wordpress_repository.dart';
 import '../../data/repositories/ivoox_repository.dart';
 import '../../core/storage/storage_helper.dart';
