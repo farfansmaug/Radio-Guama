@@ -1,7 +1,7 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:audio_service/audio_service.dart';
-import '../constants/env.dart';
-import '../datasources/live_audio_remote_datasource.dart';
+import '../core/constants/env.dart';
+import '../data/datasources/live_audio_remote_datasource.dart';
 
 /// Service for managing live audio streaming
 /// Handles play/pause, state management, and background playback
@@ -12,6 +12,11 @@ class LiveAudioService {
   bool _isPlaying = false;
   bool _isLoading = false;
   String? _errorMessage;
+
+  // Singleton instance
+  static final LiveAudioService _instance = LiveAudioService._internal();
+  factory LiveAudioService() => _instance;
+  LiveAudioService._internal();
 
   // Stream URL getter
   String get streamUrl => _dataSource.streamUrl;

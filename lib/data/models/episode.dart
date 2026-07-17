@@ -1,7 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 /// Episode model for Ivoox podcast episodes
-part 'episode.g.dart';
 
 @HiveType(typeId: 2)
 class Episode {

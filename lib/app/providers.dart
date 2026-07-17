@@ -11,14 +11,14 @@ import '../data/repositories/ivoox_repository.dart';
 /// Provider for LiveAudioService singleton
 final liveAudioServiceProvider = Provider<LiveAudioService>((ref) {
   final service = LiveAudioService();
-  service.init();
+  // Only init once, not on every provider access
   return service;
 });
 
 /// Provider for PodcastAudioService singleton
 final podcastAudioServiceProvider = Provider<PodcastAudioService>((ref) {
   final service = PodcastAudioService();
-  service.init();
+  // Only init once, not on every provider access
   return service;
 });
 

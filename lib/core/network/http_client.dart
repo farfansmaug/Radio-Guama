@@ -5,7 +5,10 @@ import '../constants/env.dart';
 class HttpClient {
   final Dio _dio;
 
-  HttpClient()
+  // Singleton instance for shared usage
+  static final HttpClient _instance = HttpClient._internal();
+  factory HttpClient() => _instance;
+  HttpClient._internal()
       : _dio = Dio(BaseOptions(
           connectTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
@@ -19,6 +22,33 @@ class HttpClient {
       responseBody: true,
       error: true,
       logPrint: (obj) => print('[HTTP] $obj'),
+    ));
+    
+    // Add retry interceptor for better resilience
+    _dio.interceptors.add(InterceptorsWrapper(
+      onError: (error, handler) async {
+        // Retry logic for network errors
+        if (error.type == DioExceptionType.connectionTimeout ||
+            error.type == DioExceptionType.receiveTimeout) {
+          try {
+            // Retry once after a short delay
+            await Future.delayed(const Duration(milliseconds: 500));
+            final response = await _dio.request(
+              error.requestOptions.path,
+              data: error.requestOptions.data,
+              options: Options(
+                method: error.requestOptions.method,
+                headers: error.requestOptions.headers,
+              ),
+              queryParameters: error.requestOptions.queryParameters,
+            );
+            return handler.resolve(response);
+          } catch (e) {
+            // If retry fails, continue with error handling
+          }
+        }
+        return handler.next(error);
+      },
     ));
   }
 

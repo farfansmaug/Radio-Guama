@@ -30,6 +30,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     {'name': AppStrings.podcasts, 'categoryId': null},
   ];
 
+  // Cache image provider to avoid recreation
+  late final ImageProvider _logoImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _logoImage = const AssetImage('assets/images/logo.png');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +46,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              'assets/images/logo.png',
+            Image(
+              image: _logoImage,
               height: 40,
               width: 40,
               errorBuilder: (context, error, stackTrace) {
@@ -149,13 +158,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 }
 
 /// Featured post card at the top of home
-class _FeaturedSection extends ConsumerWidget {
+class _FeaturedSection extends ConsumerStatefulWidget {
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final repo = ref.watch(wordpressRepositoryProvider);
-    
+  ConsumerState<_FeaturedSection> createState() => _FeaturedSectionState();
+}
+
+class _FeaturedSectionState extends ConsumerState<_FeaturedSection> {
+  // Cache for the future to avoid recreating it on every build
+  late final Future<List<Post>> _featuredPostsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _featuredPostsFuture = ref
+        .read(wordpressRepositoryProvider)
+        .getPosts(categoryId: CategoryIds.destacada, perPage: 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder<List<Post>>(
-      future: repo.getPosts(categoryId: CategoryIds.destacada, perPage: 1),
+      future: _featuredPostsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const _ShimmerFeatured();
@@ -313,18 +336,32 @@ class _SectionHeader extends StatelessWidget {
 }
 
 /// Latest posts section for a specific category
-class _LatestPostsSection extends ConsumerWidget {
+class _LatestPostsSection extends ConsumerStatefulWidget {
   final int? categoryId;
   final int limit;
 
   const _LatestPostsSection({this.categoryId, this.limit = 3});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final repo = ref.watch(wordpressRepositoryProvider);
-    
+  ConsumerState<_LatestPostsSection> createState() => _LatestPostsSectionState();
+}
+
+class _LatestPostsSectionState extends ConsumerState<_LatestPostsSection> {
+  // Cache for the future to avoid recreating it on every build
+  late final Future<List<Post>> _postsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _postsFuture = ref
+        .read(wordpressRepositoryProvider)
+        .getPosts(categoryId: widget.categoryId, perPage: widget.limit);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder<List<Post>>(
-      future: repo.getPosts(categoryId: categoryId, perPage: limit),
+      future: _postsFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const _ShimmerPostList();

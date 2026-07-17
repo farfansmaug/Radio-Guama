@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/constants/app_constants.dart';
 import '../core/constants/env.dart';
-import 'providers.dart';
-import 'routes.dart';
+import 'app/providers.dart';
+import 'app/routes.dart';
 import '../services/background_download_service.dart';
 import '../core/storage/storage_helper.dart';
+import '../services/live_audio_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,15 +20,24 @@ void main() async {
   final bgService = BackgroundDownloadService();
   await bgService.initialize();
 
-  // Start initial sync if not done
+  // Start initial sync if not done (run in background without blocking UI)
   if (!storage.isInitialDownloadComplete) {
-    // Run in background without waiting
     bgService.performSync().catchError((e) {
       print('[Main] Initial sync failed: $e');
     });
   }
 
+  // Pre-initialize audio services in background
+  _preinitializeServices();
+
   runApp(const ProviderScope(child: RadioGuamaApp()));
+}
+
+/// Pre-initialize heavy services without blocking startup
+void _preinitializeServices() async {
+  // Initialize audio services in background
+  final liveAudioService = LiveAudioService();
+  liveAudioService.init().catchError((e) => print('[Main] Audio init error: $e'));
 }
 
 class RadioGuamaApp extends ConsumerWidget {
@@ -60,7 +70,7 @@ class RadioGuamaApp extends ConsumerWidget {
         elevation: 0,
         centerTitle: true,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
