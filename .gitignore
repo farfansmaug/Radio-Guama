@@ -1,0 +1,47 @@
+```
+# Dependencies
+.dart_tool/
+.packages
+.pub/
+pubspec.lock
+
+# Build
+build/
+**/ios/.generated/
+**/android/.generated/
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Logs
+*.log
+**/logs
+
+# Coverage
+coverage/
+lcov.info
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Icon?
+Thumbs.db
+```
