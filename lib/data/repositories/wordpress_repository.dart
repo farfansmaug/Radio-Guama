@@ -39,6 +39,9 @@ class WordPressRepository {
     int perPage = 20,
     bool forceRefresh = false,
   }) async {
+    // Generate cache key based on parameters
+    final cacheKey = categoryId != null ? 'posts_cat_$categoryId' : 'posts_all';
+    
     // Try cache first for non-first page requests
     if (!forceRefresh && page == 1) {
       final cachedPosts = _getCachedPosts(categoryId: categoryId);

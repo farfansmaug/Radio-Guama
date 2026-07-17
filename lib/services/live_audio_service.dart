@@ -13,6 +13,11 @@ class LiveAudioService {
   bool _isLoading = false;
   String? _errorMessage;
 
+  // Singleton instance
+  static final LiveAudioService _instance = LiveAudioService._internal();
+  factory LiveAudioService() => _instance;
+  LiveAudioService._internal();
+
   // Stream URL getter
   String get streamUrl => _dataSource.streamUrl;
 
