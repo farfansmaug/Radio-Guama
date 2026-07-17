@@ -7,6 +7,7 @@ import 'providers.dart';
 import 'routes.dart';
 import '../services/background_download_service.dart';
 import '../core/storage/storage_helper.dart';
+import '../services/live_audio_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,15 +20,24 @@ void main() async {
   final bgService = BackgroundDownloadService();
   await bgService.initialize();
 
-  // Start initial sync if not done
+  // Start initial sync if not done (run in background without blocking UI)
   if (!storage.isInitialDownloadComplete) {
-    // Run in background without waiting
     bgService.performSync().catchError((e) {
       print('[Main] Initial sync failed: $e');
     });
   }
 
+  // Pre-initialize audio services in background
+  _preinitializeServices();
+
   runApp(const ProviderScope(child: RadioGuamaApp()));
+}
+
+/// Pre-initialize heavy services without blocking startup
+void _preinitializeServices() async {
+  // Initialize audio services in background
+  final liveAudioService = LiveAudioService();
+  liveAudioService.init().catchError((e) => print('[Main] Audio init error: $e'));
 }
 
 class RadioGuamaApp extends ConsumerWidget {

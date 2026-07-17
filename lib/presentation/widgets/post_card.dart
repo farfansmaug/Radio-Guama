@@ -17,6 +17,12 @@ class PostCard extends StatelessWidget {
     this.onTap,
   });
 
+  // Cache image provider to avoid recreation
+  ImageProvider? get _imageProvider {
+    if (post.featuredImageUrl == null) return null;
+    return CachedNetworkImageProvider(post.featuredImageUrl!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -34,6 +40,9 @@ class PostCard extends StatelessWidget {
                 height: 160,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                // Use memory cache strategy for better performance
+                memCacheWidth: 280, // Match the card width
+                memCacheHeight: 160, // Match the card height
                 placeholder: (context, url) => Container(
                   height: 160,
                   color: Colors.grey[300],
