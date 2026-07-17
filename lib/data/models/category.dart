@@ -1,7 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 /// Category model for WordPress categories
-part 'category.g.dart';
 
 @HiveType(typeId: 0)
 class Category {

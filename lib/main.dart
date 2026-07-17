@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../core/constants/app_constants.dart';
 import '../core/constants/env.dart';
-import 'providers.dart';
-import 'routes.dart';
+import 'app/providers.dart';
+import 'app/routes.dart';
 import '../services/background_download_service.dart';
 import '../core/storage/storage_helper.dart';
 import '../services/live_audio_service.dart';
@@ -70,7 +70,7 @@ class RadioGuamaApp extends ConsumerWidget {
         elevation: 0,
         centerTitle: true,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),

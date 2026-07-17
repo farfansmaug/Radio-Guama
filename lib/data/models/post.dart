@@ -1,7 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 /// Post model for WordPress posts
-part 'post.g.dart';
 
 @HiveType(typeId: 1)
 class Post {
